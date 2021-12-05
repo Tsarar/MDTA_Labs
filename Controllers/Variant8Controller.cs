@@ -44,5 +44,12 @@ namespace MDTA_Labs.Controllers
         {
             return Json(_bestOptionsCalculator.GetAllProperties());
         }
+
+        [HttpGet("getDiagram")]
+        public IActionResult Get()
+        {
+            var image = System.IO.File.ReadAllBytes(@".\Images\test.png");   // You can use your own method over here.         
+            return File(image, "image/png");
+        }
     }
 }
