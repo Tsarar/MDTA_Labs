@@ -9,9 +9,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Model\Variant 20\" />
-    <Folder Include="Model\Variant 9\" />
-  </ItemGroup>
-
 </Project>

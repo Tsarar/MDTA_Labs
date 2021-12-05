@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "quark_api": {
+    "lab_api": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "swagger",

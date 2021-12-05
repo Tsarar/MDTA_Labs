@@ -9,8 +9,10 @@ namespace MDTA_Labs.Service
         {
             var result = new List<CommunicationType>();
 
-            if (properties.HasFlag(CommunicationProperties.CanBeSuppressed) &&
-                properties.HasFlag(CommunicationProperties.CanSendSound))
+            if (!properties.HasFlag(CommunicationProperties.CantBeSuppressed) &&
+                properties.HasFlag(CommunicationProperties.CanSendSound) &&
+                properties.HasFlag(CommunicationProperties.CantBeRead) &&
+                properties.HasFlag(CommunicationProperties.DoNotNeedSpecialPreparation))
             {
                 result.Add(
                     new CommunicationType
@@ -21,9 +23,10 @@ namespace MDTA_Labs.Service
                 );
             }
 
-            if (properties.HasFlag(CommunicationProperties.CanBeRead) &&
+            if (!properties.HasFlag(CommunicationProperties.CantBeSuppressed) &&
                 properties.HasFlag(CommunicationProperties.CanSendSound) &&
-                properties.HasFlag(CommunicationProperties.CanBeSuppressed))
+                !properties.HasFlag(CommunicationProperties.CantBeRead) &&
+                properties.HasFlag(CommunicationProperties.DoNotNeedSpecialPreparation))
             {
                 result.Add(
                     new CommunicationType
@@ -34,8 +37,10 @@ namespace MDTA_Labs.Service
                 );
             }
 
-            if (properties.HasFlag(CommunicationProperties.CanBeRead) &&
-                properties.HasFlag(CommunicationProperties.CanSendSound))
+            if (properties.HasFlag(CommunicationProperties.CantBeSuppressed) &&
+                properties.HasFlag(CommunicationProperties.CanSendSound) &&
+                !properties.HasFlag(CommunicationProperties.CantBeRead) &&
+                properties.HasFlag(CommunicationProperties.DoNotNeedSpecialPreparation))
             {
                 result.Add(
                     new CommunicationType
@@ -46,8 +51,10 @@ namespace MDTA_Labs.Service
                 );
             }
 
-            if (properties.HasFlag(CommunicationProperties.NeedsSpecialPreparation) &&
-                properties.HasFlag(CommunicationProperties.CanSendSound))
+            if (properties.HasFlag(CommunicationProperties.CantBeSuppressed) &&
+                properties.HasFlag(CommunicationProperties.CanSendSound) &&
+                properties.HasFlag(CommunicationProperties.CantBeRead) &&
+                !properties.HasFlag(CommunicationProperties.DoNotNeedSpecialPreparation))
             {
                 result.Add(
                     new CommunicationType
@@ -67,13 +74,13 @@ namespace MDTA_Labs.Service
             {
                 new CommunicationPropertyDescription
                 {
-                    CommunicationProperty = CommunicationProperties.CanBeRead,
-                    Description = "Інформація може бути прочитана за розумний час під час перехоплення противником"
+                    CommunicationProperty = CommunicationProperties.CantBeRead,
+                    Description = "Інформація не може бути прочитана за розумний час під час перехоплення противником"
                 },
                 new CommunicationPropertyDescription
                 {
-                    CommunicationProperty = CommunicationProperties.CanBeSuppressed,
-                    Description = "Може бути приглушена технічними засобами супротивника"
+                    CommunicationProperty = CommunicationProperties.CantBeSuppressed,
+                    Description = "Інформація не може бути приглушена технічними засобами супротивника"
                 },
                 new CommunicationPropertyDescription
                 {
@@ -82,8 +89,8 @@ namespace MDTA_Labs.Service
                 },
                 new CommunicationPropertyDescription
                 {
-                    CommunicationProperty = CommunicationProperties.NeedsSpecialPreparation,
-                    Description = "Потребує попередньої підготовки оточення, яким фізично переміститься інформація"
+                    CommunicationProperty = CommunicationProperties.DoNotNeedSpecialPreparation,
+                    Description = "Не потребує попередньої підготовки оточення, яким фізично переміститься інформація"
                 },
             };
         }
