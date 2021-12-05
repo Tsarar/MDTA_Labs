@@ -2,7 +2,7 @@
 {
     public class MechanicalIssueDescription
     {
-        public MechanicalIssue MechanicalIssue { get; set; }
+        public MechanicalIssue Id { get; set; }
         public string Description { get; set; }
     }
 }

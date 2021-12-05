@@ -74,22 +74,22 @@ namespace MDTA_Labs.Service
             {
                 new ShipPropertiesDescription
                 {
-                    ShipProperty = ShipProperties.option1,
+                    Id = ShipProperties.option1,
                     Description = "Висока швидкість перевезення"
                 },
                 new ShipPropertiesDescription
                 {
-                    ShipProperty = ShipProperties.option2,
+                    Id = ShipProperties.option2,
                     Description = "Транспортування продуктів, що швидко псуються"
                 },
                 new ShipPropertiesDescription
                 {
-                    ShipProperty = ShipProperties.option3,
+                    Id = ShipProperties.option3,
                     Description = "Приховане перевезення вантажів"
                 },
                 new ShipPropertiesDescription
                 {
-                    ShipProperty = ShipProperties.option4,
+                    Id = ShipProperties.option4,
                     Description = "Велика вміщуваність"
                 },
             };

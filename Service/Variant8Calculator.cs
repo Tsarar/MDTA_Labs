@@ -74,22 +74,22 @@ namespace MDTA_Labs.Service
             {
                 new CommunicationPropertyDescription
                 {
-                    CommunicationProperty = CommunicationProperties.CantBeRead,
+                    Id = CommunicationProperties.CantBeRead,
                     Description = "Інформація не може бути прочитана за розумний час під час перехоплення противником"
                 },
                 new CommunicationPropertyDescription
                 {
-                    CommunicationProperty = CommunicationProperties.CantBeSuppressed,
+                    Id = CommunicationProperties.CantBeSuppressed,
                     Description = "Інформація не може бути приглушена технічними засобами супротивника"
                 },
                 new CommunicationPropertyDescription
                 {
-                    CommunicationProperty = CommunicationProperties.CanSendSound,
+                    Id = CommunicationProperties.CanSendSound,
                     Description = "Інформація може бути передана у голосовому форматі"
                 },
                 new CommunicationPropertyDescription
                 {
-                    CommunicationProperty = CommunicationProperties.DoNotNeedSpecialPreparation,
+                    Id = CommunicationProperties.DoNotNeedSpecialPreparation,
                     Description = "Не потребує попередньої підготовки оточення, яким фізично переміститься інформація"
                 },
             };

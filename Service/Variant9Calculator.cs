@@ -82,32 +82,32 @@ namespace MDTA_Labs.Service
             {
                 new MechanicalIssueDescription
                 {
-                    MechanicalIssue = MechanicalIssue.option1,
+                    Id = MechanicalIssue.option1,
                     Description = "Великі витрата пального"
                 },
                 new MechanicalIssueDescription
                 {
-                    MechanicalIssue = MechanicalIssue.option2,
+                    Id = MechanicalIssue.option2,
                     Description = "Велика кількість диму"
                 },
                 new MechanicalIssueDescription
                 {
-                    MechanicalIssue = MechanicalIssue.option3,
+                    Id = MechanicalIssue.option3,
                     Description = "Втрата потужності"
                 },
                 new MechanicalIssueDescription
                 {
-                    MechanicalIssue = MechanicalIssue.option4,
+                    Id = MechanicalIssue.option4,
                     Description = "Не впевнений запуск"
                 },
                 new MechanicalIssueDescription
                 {
-                    MechanicalIssue = MechanicalIssue.option5,
+                    Id = MechanicalIssue.option5,
                     Description = "Неприродні шуми"
                 },
                 new MechanicalIssueDescription
                 {
-                    MechanicalIssue = MechanicalIssue.option6,
+                    Id = MechanicalIssue.option6,
                     Description = "Детонації двигуна"
                 },
             };

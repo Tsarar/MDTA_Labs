@@ -2,7 +2,7 @@
 {
     public class CommunicationPropertyDescription
     {
-        public CommunicationProperties CommunicationProperty { get; set; }
+        public CommunicationProperties Id { get; set; }
         public string Description { get; set; }
     }
 }
