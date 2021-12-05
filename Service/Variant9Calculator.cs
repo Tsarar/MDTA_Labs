@@ -83,7 +83,7 @@ namespace MDTA_Labs.Service
                 new MechanicalIssueDescription
                 {
                     Id = MechanicalIssue.option1,
-                    Description = "Великі витрата пального"
+                    Description = "Великі витрати пального"
                 },
                 new MechanicalIssueDescription
                 {
