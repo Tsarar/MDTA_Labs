@@ -14,6 +14,42 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Images\car_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+	<None Update="Images\car_2.png">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	<None Update="Images\car_3.png">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	<None Update="Images\car_4.png">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	<None Update="Images\connection_1.png">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	<None Update="Images\connection_2.png">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	<None Update="Images\connection_3.png">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	<None Update="Images\connection_4.png">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	<None Update="Images\transport_1.png">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	<None Update="Images\transport_2.png">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	<None Update="Images\transport_3.png">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+	<None Update="Images\transport_4.png">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
     <None Update="Images\test.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
