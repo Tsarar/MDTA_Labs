@@ -94,5 +94,49 @@ namespace MDTA_Labs.Service
                 },
             };
         }
+
+        public List<CommunicationPropertyDescription> GetAllTypes()
+        {
+            return new List<CommunicationPropertyDescription>
+            {
+                new CommunicationPropertyDescription
+                {
+                    Id = (CommunicationProperties)1,
+                    Description = "Радіозв'язок із шифруванням"
+                },
+                new CommunicationPropertyDescription
+                {
+                    Id = (CommunicationProperties)2,
+                    Description = "Радіозв'язок без шифрування"
+                },
+                new CommunicationPropertyDescription
+                {
+                    Id = (CommunicationProperties)3,
+                    Description = "Гонець"
+                },
+                new CommunicationPropertyDescription
+                {
+                    Id = (CommunicationProperties)4,
+                    Description = "Захищене провідне з'єднання"
+                },
+            };
+        }
+
+        public string GetSchemeByType(int type)
+        {
+            switch (type)
+            {
+                case 1:
+                    return "connection_1.png";
+                case 2:
+                    return "connection_2.png";
+                case 3:
+                    return "connection_3.png";
+                case 4:
+                default:
+                    return "connection_4.png";
+                    break;
+            }
+        }
     }
 }

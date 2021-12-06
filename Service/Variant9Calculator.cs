@@ -112,5 +112,49 @@ namespace MDTA_Labs.Service
                 },
             };
         }
+
+        public List<MechanicalIssueDescription> GetAllTypes()
+        {
+            return new List<MechanicalIssueDescription>
+            {
+                new MechanicalIssueDescription
+                {
+                    Id = (MechanicalIssue)2,
+                    Description = "Несправність системи живлення"
+                },
+                new MechanicalIssueDescription
+                {
+                    Id = (MechanicalIssue)1,
+                    Description = "Несправність  поршневої групи"
+                },
+                new MechanicalIssueDescription
+                {
+                    Id = (MechanicalIssue)3,
+                    Description = "Несправність подушки двигуна"
+                },
+                new MechanicalIssueDescription
+                {
+                    Id = (MechanicalIssue)4,
+                    Description = "Пошкодження корпусу двигуна"
+                },
+            };
+        }
+
+        public string GetSchemeByType(int type)
+        {
+            switch (type)
+            {
+                case 1:
+                    return "car_1.png";
+                case 2:
+                    return "car_2.png";
+                case 3:
+                    return "car_3.png";
+                case 4:
+                default:
+                    return "car_4.png";
+                    break;
+            }
+        }
     }
 }

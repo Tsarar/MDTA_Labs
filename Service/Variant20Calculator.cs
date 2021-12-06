@@ -94,5 +94,49 @@ namespace MDTA_Labs.Service
                 },
             };
         }
+
+        public List<ShipPropertiesDescription> GetAllTypes()
+        {
+            return new List<ShipPropertiesDescription>
+            {
+                new ShipPropertiesDescription
+                {
+                    Id = (ShipProperties)4,
+                    Description = "Танкер"
+                },
+                new ShipPropertiesDescription
+                {
+                    Id = (ShipProperties)2,
+                    Description = "Мале універсальне судно"
+                },
+                new ShipPropertiesDescription
+                {
+                    Id = (ShipProperties)3,
+                    Description = "Рефрижераторне судно"
+                },
+                new ShipPropertiesDescription
+                {
+                    Id = (ShipProperties)1,
+                    Description = "Підводний човен"
+                },
+            };
+        }
+
+        public string GetSchemeByType(int type)
+        {
+            switch (type)
+            {
+                case 1:
+                    return "transport_1.png";
+                case 2:
+                    return "transport_2.png";
+                case 3:
+                    return "transport_3.png";
+                case 4:
+                default:
+                    return "transport_4.png";
+                    break;
+            }
+        }
     }
 }

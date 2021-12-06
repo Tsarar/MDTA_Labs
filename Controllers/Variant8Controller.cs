@@ -45,10 +45,17 @@ namespace MDTA_Labs.Controllers
             return Json(_bestOptionsCalculator.GetAllProperties());
         }
 
-        [HttpGet("getDiagram")]
-        public IActionResult Get()
+        [HttpGet("getTypes")]
+        public async Task<IActionResult> GetTypes()
         {
-            var image = System.IO.File.ReadAllBytes(@".\Images\test.png");   // You can use your own method over here.         
+            return Json(_bestOptionsCalculator.GetAllTypes());
+        }
+
+        [HttpGet("getDiagram")]
+        public IActionResult GetDiagram([FromQuery] int type)
+        {
+            var path = _bestOptionsCalculator.GetSchemeByType(type);
+            var image = System.IO.File.ReadAllBytes("Images/" + path);   // You can use your own method over here.         
             return File(image, "image/png");
         }
     }
