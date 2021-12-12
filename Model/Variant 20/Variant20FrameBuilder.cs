@@ -13,34 +13,30 @@ namespace MDTA_Labs.Model.Variant_20
         {
             return new Frame()
             {
-                FrameName = "Тип зв'язку",
+                FrameName = "Судно",
                 Slots = new List<FrameSlot>
                 {
                     new FrameSlot()
                     {
-                        SlotName = "Опис"
+                        SlotName = "Капітан"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Власник"
+                        SlotName = "Походження"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Дата наступного обслуговування"
+                        SlotName = "Рік випуску"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Код шифрування"
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
+                        SlotName = "Характеристики",
                     },
                 }
             };
         }
 
-        public static Frame GetEncryptedRadioGenericFrame()
+        public static Frame GetTankerGenericFrame()
         {
             if (baseFrame == null)
             {
@@ -50,147 +46,135 @@ namespace MDTA_Labs.Model.Variant_20
             return new Frame()
             {
                 BaseFrame = baseFrame,
-                FrameName = "Шифрований радіозв'язок",
+                FrameName = "Танкер",
                 Slots = new List<FrameSlot>
                 {
                     new FrameSlot()
                     {
-                        SlotName = "Опис",
+                        SlotName = "Капітан"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Власник",
-                        SlotValue = "Немає власника"
+                        SlotName = "Походження",
+                        OnDelete = (_) => "Судно передано на службу в іншу країну, доки судно не пройде розмитнення, країну не визначено",
+                        OnEdit = (name) => "Судно розмитнено, країну змінено на " + name,
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Дата наступного обслуговування", 
-                        OnAdd = (_) => (new DateTime(DateTime.Now.Year + 1, DateTime.Now.Month, 1)).ToString()
+                        SlotName = "Рік випуску"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Код шифрування",
-                        SlotValue = "12345",
-                        OnEdit = (newKey) => "Увага! Код шифрування був змінений на " + newKey
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
+                        SlotName = "Характеристики",
+                        SlotValue = "Велика вміщуваність"
                     },
                 }
             };
         }
 
-        public static Frame GetEncryptedRadioFrame()
+        public static Frame GetTanker1()
         {
-            var baseFrame = GetEncryptedRadioGenericFrame();
+            var baseFrame = GetTankerGenericFrame();
 
             var frame = new Frame()
             { 
                 BaseFrame = baseFrame,
-                FrameName = "Радіо #341",
+                FrameName = "Танкер хімовоз",
                 Slots = new List<FrameSlot>
                 {
                     new FrameSlot()
                     {
-                        SlotName = "Опис",
-                        OnEdit = (name) => "Опис був змінений на " + name
+                        SlotName = "Капітан",
+                        OnEdit = (name) => $"Капітана судна {name.Split("|")[0]} було змінено, у судна новий капітан {name.Split("|")[1]}"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Власник",
-                        SlotValue = "Микита",
-                        OnDelete = (_) => "Увага! У радіо більше немає власника",
-                        OnEdit = (name) => "Увага! У радіо новий власник: " + name
+                        SlotName = "Походження"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Дата наступного обслуговування",
-                        SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
+                        SlotName = "Рік випуску"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Код шифрування"
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
+                        SlotName = "Характеристики",
                     },
                 }
             };
 
-            var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Микита"));
+            var cptSlot = frame.Slots.Where(x => x.SlotName == "Капітан").FirstOrDefault();
+            cptSlot.SlotValue = "Lavrenko Orymyr";
+            GlobalLog.ConsoleLog.AppendLine(cptSlot.OnEdit(frame.FrameName + "|" + "Lavrenko Orymyr"));
 
-            var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-            nameSlot.SlotValue = "Опис радіо";
-            GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Опис радіо"));
+            var countrySlot = frame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            var oldcountrySlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnDelete("Україна"));
+            countrySlot.SlotValue = "Україна";
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnEdit("Україна"));
 
-            var encryptionSlot = frame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-            encryptionSlot.SlotValue = "54321";
-            var oldEncryptionSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(oldEncryptionSlot.OnEdit("54321"));
+            var yearSlot = frame.Slots.Where(x => x.SlotName == "Рік випуску").FirstOrDefault();
+            yearSlot.SlotValue = "2010";
+
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо характеристики із базового фрейму");
 
             return frame;
         }
 
-        public static Frame GetEncryptedRadioFrame2()
+        public static Frame GetTanker2()
         {
-            var baseFrame = GetEncryptedRadioGenericFrame();
+            var baseFrame = GetTankerGenericFrame();
 
             var frame = new Frame()
             {
                 BaseFrame = baseFrame,
-                FrameName = "Радіо #334",
+                FrameName = "Танкер нефтеналивний",
                 Slots = new List<FrameSlot>
                 {
                     new FrameSlot()
                     {
-                        SlotName = "Опис",
-                        OnEdit = (name) => "Опис був змінений на " + name
+                        SlotName = "Капітан",
+                        OnEdit = (name) => $"Капітана судна {name.Split("|")[0]} було змінено, у судна новий капітан {name.Split("|")[1]}"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Власник",
-                        SlotValue = "Сергій",
-                        OnDelete = (_) => "Увага! У радіо більше немає власника",
-                        OnEdit = (name) => "Увага! У радіо новий власник: " + name
+                        SlotName = "Походження"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Дата наступного обслуговування",
-                        SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
+                        SlotName = "Рік випуску"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Код шифрування"
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
+                        SlotName = "Характеристики",
                     },
                 }
             };
 
-            var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Сергій"));
+            var cptSlot = frame.Slots.Where(x => x.SlotName == "Капітан").FirstOrDefault();
+            cptSlot.SlotValue = "May Browne";
+            GlobalLog.ConsoleLog.AppendLine(cptSlot.OnEdit(frame.FrameName + "|" + "May Browne"));
 
-            var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-            nameSlot.SlotValue = "Опис радіо";
-            GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Опис радіо"));
+            var countrySlot = frame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            var oldcountrySlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnDelete("США"));
+            countrySlot.SlotValue = "США";
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnEdit("США"));
 
-            var encryptionSlot = frame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-            encryptionSlot.SlotValue = "67890";
-            var oldEncryptionSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(oldEncryptionSlot.OnEdit("67890"));
+            var yearSlot = frame.Slots.Where(x => x.SlotName == "Рік випуску").FirstOrDefault();
+            yearSlot.SlotValue = "2018";
+
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо характеристики із базового фрейму");
 
             return frame;
         }
 
-        public static Frame GetUnencryptedRadioGenericFrame()
+        public static Frame GetSmallGenericFrame()
         {
             if (baseFrame == null)
             {
@@ -200,137 +184,84 @@ namespace MDTA_Labs.Model.Variant_20
             return new Frame()
             {
                 BaseFrame = baseFrame,
-                FrameName = "Нешифроване радіо",
+                FrameName = "Мале універсальне",
                 Slots = new List<FrameSlot>
                 {
                     new FrameSlot()
                     {
-                        SlotName = "Опис",
+                        SlotName = "Капітан"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Власник",
-                        SlotValue = "Немає власника"
+                        SlotName = "Походження",
+                        OnDelete = (_) => "Судно передано на службу в іншу країну, доки судно не пройде розмитнення, країну не визначено",
+                        OnEdit = (name) => "Судно розмитнено, країну змінено на " + name,
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Дата наступного обслуговування",
-                        OnAdd = (_) => (new DateTime(DateTime.Now.Year + 1, DateTime.Now.Month, 1)).ToString()
+                        SlotName = "Рік випуску"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Код шифрування",
-                        SlotValue = "12345",
-                        OnEdit = (newKey) => "Увага! Код шифрування був змінений на " + newKey
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
+                        SlotName = "Характеристики",
+                        SlotValue = "Висока швидкість перевезення, Транспортування продуктів, що швидко псуються"
                     },
                 }
             };
         }
 
-        public static Frame GetUnencryptedRadioFrame()
+        public static Frame GetSmall1()
         {
-            var baseFrame = GetUnencryptedRadioGenericFrame();
+            var baseFrame = GetSmallGenericFrame();
 
             var frame = new Frame()
             {
                 BaseFrame = baseFrame,
-                FrameName = "Радіо #445",
+                FrameName = "Мале універсальне Hyundai",
                 Slots = new List<FrameSlot>
                 {
                     new FrameSlot()
                     {
-                        SlotName = "Опис",
-                        OnEdit = (name) => "Опис був змінений на " + name
+                        SlotName = "Капітан",
+                        OnEdit = (name) => $"Капітана судна {name.Split("|")[0]} було змінено, у судна новий капітан {name.Split("|")[1]}"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Власник",
-                        SlotValue = "Микола",
-                        OnDelete = (_) => "Увага! У радіо більше немає власника",
-                        OnEdit = (name) => "Увага! У радіо новий власник: " + name
+                        SlotName = "Походження"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Дата наступного обслуговування",
-                        SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
+                        SlotName = "Рік випуску"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Код шифрування"
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
+                        SlotName = "Характеристики",
                     },
                 }
             };
 
-            var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Микола"));
+            var cptSlot = frame.Slots.Where(x => x.SlotName == "Капітан").FirstOrDefault();
+            cptSlot.SlotValue = "Yeop Kun-Bong";
+            GlobalLog.ConsoleLog.AppendLine(cptSlot.OnEdit(frame.FrameName + "|" + "Yeop Kun-Bong"));
 
-            var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-            nameSlot.SlotValue = "Опис нешифрованого радіо";
-            GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Опис нешифрованого радіо"));
+            var countrySlot = frame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            var oldcountrySlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnDelete("Корея"));
+            countrySlot.SlotValue = "Корея";
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnEdit("Корея"));
 
-            return frame;
-        }
+            var yearSlot = frame.Slots.Where(x => x.SlotName == "Рік випуску").FirstOrDefault();
+            yearSlot.SlotValue = "2010";
 
-        public static Frame GetUnencryptedRadioFrame2()
-        {
-            var baseFrame = GetUnencryptedRadioGenericFrame();
-
-            var frame = new Frame()
-            {
-                BaseFrame = baseFrame,
-                FrameName = "Радіо #446",
-                Slots = new List<FrameSlot>
-                {
-                    new FrameSlot()
-                    {
-                        SlotName = "Опис",
-                        OnEdit = (name) => "Опис був змінений на " + name
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Власник",
-                        SlotValue = "Тарас",
-                        OnDelete = (_) => "Увага! У радіо більше немає власника",
-                        OnEdit = (name) => "Увага! У радіо новий власник: " + name
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Дата наступного обслуговування",
-                        SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Код шифрування"
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
-                    },
-                }
-            };
-
-            var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Тарас"));
-
-            var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-            nameSlot.SlotValue = "Дуже гучне радіо";
-            GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Дуже гучне радіо"));
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо характеристики із базового фрейму");
 
             return frame;
         }
 
-        public static Frame GetLandlineGenericFrame()
+        public static Frame GetRefrGenericFrame()
         {
             if (baseFrame == null)
             {
@@ -340,135 +271,138 @@ namespace MDTA_Labs.Model.Variant_20
             return new Frame()
             {
                 BaseFrame = baseFrame,
-                FrameName = "Провідне з'єднання",
+                FrameName = "Рефрежираторне",
                 Slots = new List<FrameSlot>
                 {
                     new FrameSlot()
                     {
-                        SlotName = "Опис",
+                        SlotName = "Капітан"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Власник",
-                        SlotValue = "Немає власника"
+                        SlotName = "Походження",
+                        OnDelete = (_) => "Судно передано на службу в іншу країну, доки судно не пройде розмитнення, країну не визначено",
+                        OnEdit = (name) => "Судно розмитнено, країну змінено на " + name,
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Дата наступного обслуговування",
-                        OnAdd = (_) => (new DateTime(DateTime.Now.Year + 1, DateTime.Now.Month, 1)).ToString()
+                        SlotName = "Рік випуску"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Код шифрування",
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Не потребує попередньої підготовки оточення, яким фізично переміститься інформація, Інформація не може бути передана у голосовому форматі",
+                        SlotName = "Характеристики",
+                        SlotValue = "Висока швидкість перевезення, Транспортування продуктів, що швидко псуються, Велика вміщуваність"
                     },
                 }
             };
         }
 
-        public static Frame GetLandlineFrame()
+        public static Frame GetRefr1()
         {
-            var baseFrame = GetLandlineGenericFrame();
+            var baseFrame = GetRefrGenericFrame();
 
             var frame = new Frame()
             {
                 BaseFrame = baseFrame,
-                FrameName = "Провідне з'єднання #3",
+                FrameName = "Рефрижераторне Reefer",
                 Slots = new List<FrameSlot>
                 {
                     new FrameSlot()
                     {
-                        SlotName = "Опис",
-                        OnEdit = (name) => "Опис був змінений на " + name
+                        SlotName = "Капітан",
+                        OnEdit = (name) => $"Капітана судна {name.Split("|")[0]} було змінено, у судна новий капітан {name.Split("|")[1]}"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Власник",
-                        SlotValue = "Військова частина 21",
-                        OnDelete = (_) => "Увага! У провідного з'єднання більше немає власника",
-                        OnEdit = (name) => "Увага! У провідного з'єднання новий власник: " + name
+                        SlotName = "Походження"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Дата наступного обслуговування",
-                        SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
+                        SlotName = "Рік випуску",
+                        SlotValue = "2021"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Код шифрування"
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Не потребує попередньої підготовки оточення, яким фізично переміститься інформація, Інформація не може бути передана у голосовому форматі",
+                        SlotName = "Характеристики",
                     },
                 }
             };
 
-            var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Військова частина 21"));
+            var cptSlot = frame.Slots.Where(x => x.SlotName == "Капітан").FirstOrDefault();
+            cptSlot.SlotValue = "Zuwena Uba";
+            GlobalLog.ConsoleLog.AppendLine(cptSlot.OnEdit(frame.FrameName + "|" + "Zuwena Uba"));
 
-            var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-            nameSlot.SlotValue = "Ця лінія довжиною 200 метрів";
-            GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Ця лінія довжиною 200 метрів"));
+            var countrySlot = frame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            var oldcountrySlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnDelete("Уганда"));
+            countrySlot.SlotValue = "Уганда";
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnEdit("Уганда"));
+
+            var yearSlot = frame.Slots.Where(x => x.SlotName == "Рік випуску").FirstOrDefault();
+            yearSlot.SlotValue = "1965";
+
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо характеристики із базового фрейму");
 
             return frame;
         }
 
-        public static Frame GetLandlineFrame2()
+        public static Frame GetRefr2()
         {
-            var baseFrame = GetLandlineGenericFrame();
+            var baseFrame = GetRefrGenericFrame();
 
             var frame = new Frame()
             {
                 BaseFrame = baseFrame,
-                FrameName = "Провідне з'єднання #4",
+                FrameName = "Рефрижераторне X Æ A-12",
                 Slots = new List<FrameSlot>
                 {
                     new FrameSlot()
                     {
-                        SlotName = "Опис",
-                        OnEdit = (name) => "Опис був змінений на " + name
+                        SlotName = "Капітан",
+                        OnEdit = (name) => $"Капітана судна {name.Split("|")[0]} було змінено, у судна новий капітан {name.Split("|")[1]}"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Власник",
-                        SlotValue = "Військова частина 21",
-                        OnDelete = (_) => "Увага! У провідного з'єднання більше немає власника",
-                        OnEdit = (name) => "Увага! У провідного з'єднання новий власник: " + name
+                        SlotName = "Походження"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Дата наступного обслуговування",
-                        SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
+                        SlotName = "Рік випуску"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Код шифрування"
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Не потребує попередньої підготовки оточення, яким фізично переміститься інформація, Інформація не може бути передана у голосовому форматі",
+                        SlotName = "Характеристики",
                     },
                 }
             };
 
-            var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Військова частина 23"));
+            var cptSlot = frame.Slots.Where(x => x.SlotName == "Капітан").FirstOrDefault();
+            cptSlot.SlotValue = "Hachiro Kyoko";
+            GlobalLog.ConsoleLog.AppendLine(cptSlot.OnEdit(frame.FrameName + "|" + "Hachiro Kyoko"));
 
-            var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-            nameSlot.SlotValue = "Ця лінія довжиною 250 метрів";
-            GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Ця лінія довжиною 250 метрів"));
+            var countrySlot = frame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            var oldcountrySlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnDelete("Японія"));
+            countrySlot.SlotValue = "Японія";
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnEdit("Японія"));
+
+            var oldYearSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Рік випуску").FirstOrDefault();
+            var yearSlot = frame.Slots.Where(x => x.SlotName == "Рік випуску").FirstOrDefault();
+            yearSlot.SlotValue = oldYearSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо рік із базового фрейму (2021)");
+
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо характеристики із базового фрейму");
 
             return frame;
         }
 
-        public static Frame GetCourierGenericFrame()
+        public static Frame GetSubmarineGenericFrame()
         {
             if (baseFrame == null)
             {
@@ -478,139 +412,80 @@ namespace MDTA_Labs.Model.Variant_20
             return new Frame()
             {
                 BaseFrame = baseFrame,
-                FrameName = "Гонець",
+                FrameName = "Підводний човен",
                 Slots = new List<FrameSlot>
                 {
                     new FrameSlot()
                     {
-                        SlotName = "Опис",
+                        SlotName = "Капітан"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Власник",
-                        SlotValue = "Немає війської частини"
+                        SlotName = "Походження",
+                        OnDelete = (_) => "Судно передано на службу в іншу країну, доки судно не пройде розмитнення, країну не визначено",
+                        OnEdit = (name) => "Судно розмитнено, країну змінено на " + name,
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Дата наступного обслуговування",
+                        SlotName = "Рік випуску",
+                        SlotValue = "2021"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Код шифрування",
-                        SlotValue = "Шифр цезаря",
-                        OnEdit = (newKey) => "Увага! Ключ шифрування був змінений на " + newKey
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Інформація не може бути передана у голосовому форматі",
+                        SlotName = "Характеристики",
+                        SlotValue = "Висока швидкість перевезення, Приховане перевезення вантажів, Велика вміщуваність"
                     },
                 }
             };
         }
 
-        public static Frame GetCourierFrame()
+        public static Frame GetSubmarine()
         {
-            var baseFrame = GetCourierGenericFrame();
+            var baseFrame = GetSubmarineGenericFrame();
 
             var frame = new Frame()
             {
                 BaseFrame = baseFrame,
-                FrameName = "Гонець Паша",
+                FrameName = "Підводний човен Astitute",
                 Slots = new List<FrameSlot>
                 {
                     new FrameSlot()
                     {
-                        SlotName = "Опис",
-                        OnEdit = (name) => "Опис був змінений на " + name
+                        SlotName = "Капітан",
+                        OnEdit = (name) => $"Капітана судна {name.Split("|")[0]} було змінено, у судна новий капітан {name.Split("|")[1]}"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Власник",
-                        SlotValue = "Полк номер 5",
-                        OnDelete = (_) => "Увага! Гонець більше не приписаний до війського формування",
-                        OnEdit = (name) => "Увага! Гонець приписаний до нового війського формування: " + name
+                        SlotName = "Походження"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Дата наступного обслуговування",
+                        SlotName = "Рік випуску"
                     },
                     new FrameSlot()
                     {
-                        SlotName = "Код шифрування"
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Інформація не може бути передана у голосовому форматі",
+                        SlotName = "Характеристики",
                     },
                 }
             };
 
-            var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Полк номер 5"));
+            var cptSlot = frame.Slots.Where(x => x.SlotName == "Капітан").FirstOrDefault();
+            cptSlot.SlotValue = "Luis Fletcher";
+            GlobalLog.ConsoleLog.AppendLine(cptSlot.OnEdit(frame.FrameName + "|" + "Luis Fletcher"));
 
-            var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-            nameSlot.SlotValue = "Рядовий Петров";
-            GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Рядовий Петров"));
+            var countrySlot = frame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            var oldcountrySlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Походження").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnDelete("Британія"));
+            countrySlot.SlotValue = "Британія";
+            GlobalLog.ConsoleLog.AppendLine(oldcountrySlot.OnEdit("Британія"));
 
-            var encryptionSlot = frame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-            encryptionSlot.SlotValue = "Шифр цезаря зі зсувом 5";
-            var oldEncryptionSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(oldEncryptionSlot.OnEdit("Шифр цезаря зі зсувом 5"));
+            var yearSlot = frame.Slots.Where(x => x.SlotName == "Рік випуску").FirstOrDefault();
+            yearSlot.SlotValue = "2012";
 
-            return frame;
-        }
-
-        public static Frame GetCourierFrame2()
-        {
-            var baseFrame = GetCourierGenericFrame();
-
-            var frame = new Frame()
-            {
-                BaseFrame = baseFrame,
-                FrameName = "Гонець Андрій",
-                Slots = new List<FrameSlot>
-                {
-                    new FrameSlot()
-                    {
-                        SlotName = "Опис",
-                        OnEdit = (name) => "Опис був змінений на " + name
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Власник",
-                        SlotValue = "Полк номер 12",
-                        OnDelete = (_) => "Увага! Гонець більше не приписаний до війського формування",
-                        OnEdit = (name) => "Увага! Гонець приписаний до нового війського формування: " + name
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Дата наступного обслуговування",
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Код шифрування"
-                    },
-                    new FrameSlot()
-                    {
-                        SlotName = "Властивості",
-                        SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Інформація не може бути передана у голосовому форматі",
-                    },
-                }
-            };
-
-            var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Полк номер 12"));
-
-            var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-            nameSlot.SlotValue = "Рядовий Іванов";
-            GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Рядовий Іванов"));
-
-            var encryptionSlot = frame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-            encryptionSlot.SlotValue = "Шифр цезаря зі зсувом 12";
-            var oldEncryptionSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-            GlobalLog.ConsoleLog.AppendLine(oldEncryptionSlot.OnEdit("Шифр цезаря зі зсувом 12"));
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Характеристики").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо характеристики із базового фрейму");
 
             return frame;
         }

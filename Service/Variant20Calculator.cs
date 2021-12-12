@@ -170,14 +170,14 @@ namespace MDTA_Labs.Service
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Танкер хімовоз",
                         Option = 1
                     }
                 );
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Танкер нафтеналивний",
                         Option = 2
                     }
                 );
@@ -191,15 +191,8 @@ namespace MDTA_Labs.Service
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Мале універсальне Hyundai",
                         Option = 3
-                    }
-                );
-                result.Add(
-                    new DiagramType
-                    {
-                        Name = "",
-                        Option = 4
                     }
                 );
             }
@@ -212,14 +205,14 @@ namespace MDTA_Labs.Service
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Рефрижераторне Reefer",
                         Option = 5
                     }
                 );
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Рефрижераторне X Æ A-12",
                         Option = 6
                     }
                 );
@@ -233,15 +226,8 @@ namespace MDTA_Labs.Service
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Підводний човен Astitute",
                         Option = 7
-                    }
-                );
-                result.Add(
-                    new DiagramType
-                    {
-                        Name = "",
-                        Option = 8
                     }
                 );
             }
@@ -281,28 +267,22 @@ namespace MDTA_Labs.Service
             switch (option)
             {
                 case 1:
-                    Variant20FrameBuilder.GetUnencryptedRadioFrame();
+                    Variant20FrameBuilder.GetTanker1();
                     break;
                 case 2:
-                    Variant20FrameBuilder.GetUnencryptedRadioFrame2();
+                    Variant20FrameBuilder.GetTanker2();
                     break;
                 case 3:
-                    Variant20FrameBuilder.GetEncryptedRadioFrame();
-                    break;
-                case 4:
-                    Variant20FrameBuilder.GetEncryptedRadioFrame2();
+                    Variant20FrameBuilder.GetSmall1();
                     break;
                 case 5:
-                    Variant20FrameBuilder.GetLandlineFrame();
+                    Variant20FrameBuilder.GetRefr1();
                     break;
                 case 6:
-                    Variant20FrameBuilder.GetLandlineFrame2();
+                    Variant20FrameBuilder.GetRefr2();
                     break;
                 case 7:
-                    Variant20FrameBuilder.GetCourierFrame();
-                    break;
-                case 8:
-                    Variant20FrameBuilder.GetCourierFrame2();
+                    Variant20FrameBuilder.GetSubmarine();
                     break;
 
                 default:

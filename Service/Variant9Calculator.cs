@@ -306,30 +306,30 @@ namespace MDTA_Labs.Service
 
             switch (option)
             {
-                case 1:
-                    Variant9FrameBuilder.GetUnencryptedRadioFrame();
-                    break;
-                case 2:
-                    Variant9FrameBuilder.GetUnencryptedRadioFrame2();
-                    break;
-                case 3:
-                    Variant9FrameBuilder.GetEncryptedRadioFrame();
-                    break;
-                case 4:
-                    Variant9FrameBuilder.GetEncryptedRadioFrame2();
-                    break;
-                case 5:
-                    Variant9FrameBuilder.GetLandlineFrame();
-                    break;
-                case 6:
-                    Variant9FrameBuilder.GetLandlineFrame2();
-                    break;
-                case 7:
-                    Variant9FrameBuilder.GetCourierFrame();
-                    break;
-                case 8:
-                    Variant9FrameBuilder.GetCourierFrame2();
-                    break;
+                //case 1:
+                //    Variant9FrameBuilder.GetUnencryptedRadioFrame();
+                //    break;
+                //case 2:
+                //    Variant9FrameBuilder.GetUnencryptedRadioFrame2();
+                //    break;
+                //case 3:
+                //    Variant9FrameBuilder.GetEncryptedRadioFrame();
+                //    break;
+                //case 4:
+                //    Variant9FrameBuilder.GetEncryptedRadioFrame2();
+                //    break;
+                //case 5:
+                //    Variant9FrameBuilder.GetLandlineFrame();
+                //    break;
+                //case 6:
+                //    Variant9FrameBuilder.GetLandlineFrame2();
+                //    break;
+                //case 7:
+                //    Variant9FrameBuilder.GetCourierFrame();
+                //    break;
+                //case 8:
+                //    Variant9FrameBuilder.GetCourierFrame2();
+                //    break;
 
                 default:
                     break;
