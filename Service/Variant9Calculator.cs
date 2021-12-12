@@ -1,5 +1,7 @@
-﻿using MDTA_Labs.Model.Variant_9;
+﻿using MDTA_Labs.Model;
+using MDTA_Labs.Model.Variant_9;
 using System.Collections.Generic;
+using System.Text;
 
 namespace MDTA_Labs.Service
 {
@@ -155,6 +157,185 @@ namespace MDTA_Labs.Service
                     return "car_4.png";
                     break;
             }
+        }
+
+        public string GetTask3SchemeByType(int type)
+        {
+            switch (type)
+            {
+                case 1:
+                    return "variant9_1.png";
+                case 2:
+                    return "variant9_2.png";
+                case 3:
+                    return "variant9_3.png";
+                case 4:
+                    return "variant9_4.png";
+                default:
+                    return null;
+            }
+        }
+
+        public List<DiagramType> GetTask3DiagramNames(MechanicalIssue properties)
+        {
+            var result = new List<DiagramType>();
+
+            if (properties.HasFlag(MechanicalIssue.option1) &&
+                !properties.HasFlag(MechanicalIssue.option2) &&
+                properties.HasFlag(MechanicalIssue.option3) &&
+                properties.HasFlag(MechanicalIssue.option4) &&
+                !properties.HasFlag(MechanicalIssue.option5) &&
+                !properties.HasFlag(MechanicalIssue.option6))
+            {
+                result.Add(
+                    new DiagramType
+                    {
+                        Name = "",
+                        Option = 1
+                    }
+                );
+                result.Add(
+                    new DiagramType
+                    {
+                        Name = "",
+                        Option = 2
+                    }
+                );
+            }
+
+            if (properties.HasFlag(MechanicalIssue.option1) &&
+                properties.HasFlag(MechanicalIssue.option2) &&
+                !properties.HasFlag(MechanicalIssue.option3) &&
+                properties.HasFlag(MechanicalIssue.option4) &&
+                !properties.HasFlag(MechanicalIssue.option5) &&
+                !properties.HasFlag(MechanicalIssue.option6))
+            {
+                result.Add(
+                    new DiagramType
+                    {
+                        Name = "",
+                        Option = 3
+                    }
+                );
+                result.Add(
+                    new DiagramType
+                    {
+                        Name = "",
+                        Option = 4
+                    }
+                );
+            }
+
+            if (!properties.HasFlag(MechanicalIssue.option1) &&
+                !properties.HasFlag(MechanicalIssue.option2) &&
+                properties.HasFlag(MechanicalIssue.option3) &&
+                properties.HasFlag(MechanicalIssue.option4) &&
+                properties.HasFlag(MechanicalIssue.option5) &&
+                properties.HasFlag(MechanicalIssue.option6))
+            {
+                result.Add(
+                    new DiagramType
+                    {
+                        Name = "",
+                        Option = 5
+                    }
+                );
+                result.Add(
+                    new DiagramType
+                    {
+                        Name = "",
+                        Option = 6
+                    }
+                );
+            }
+
+            if (properties.HasFlag(MechanicalIssue.option1) &&
+                !properties.HasFlag(MechanicalIssue.option2) &&
+                properties.HasFlag(MechanicalIssue.option3) &&
+                !properties.HasFlag(MechanicalIssue.option4) &&
+                !properties.HasFlag(MechanicalIssue.option5) &&
+                properties.HasFlag(MechanicalIssue.option6))
+            {
+                result.Add(
+                    new DiagramType
+                    {
+                        Name = "",
+                        Option = 7
+                    }
+                );
+                result.Add(
+                    new DiagramType
+                    {
+                        Name = "",
+                        Option = 8
+                    }
+                );
+            }
+
+            return result;
+        }
+
+        public string GetTask3SchemeByOption(int option)
+        {
+            switch (option)
+            {
+                case 1:
+                    return "variant9_1_1.png";
+                case 2:
+                    return "variant9_1_2.png";
+                case 3:
+                    return "variant9_2_1.png";
+                case 4:
+                    return "variant9_2_2.png";
+                case 5:
+                    return "variant9_3_1.png";
+                case 6:
+                    return "variant9_3_2.png";
+                case 7:
+                    return "variant9_4_1.png";
+                case 8:
+                    return "variant9_4_2.png";
+                default:
+                    return null;
+            }
+        }
+
+        public string GetTask3LogByOption(int option)
+        {
+            GlobalLog.ConsoleLog = new StringBuilder();
+
+            switch (option)
+            {
+                case 1:
+                    Variant9FrameBuilder.GetUnencryptedRadioFrame();
+                    break;
+                case 2:
+                    Variant9FrameBuilder.GetUnencryptedRadioFrame2();
+                    break;
+                case 3:
+                    Variant9FrameBuilder.GetEncryptedRadioFrame();
+                    break;
+                case 4:
+                    Variant9FrameBuilder.GetEncryptedRadioFrame2();
+                    break;
+                case 5:
+                    Variant9FrameBuilder.GetLandlineFrame();
+                    break;
+                case 6:
+                    Variant9FrameBuilder.GetLandlineFrame2();
+                    break;
+                case 7:
+                    Variant9FrameBuilder.GetCourierFrame();
+                    break;
+                case 8:
+                    Variant9FrameBuilder.GetCourierFrame2();
+                    break;
+
+                default:
+                    break;
+            }
+
+            return GlobalLog.ConsoleLog.ToString();
         }
     }
 }

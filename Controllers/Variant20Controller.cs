@@ -58,5 +58,65 @@ namespace MDTA_Labs.Controllers
             var image = System.IO.File.ReadAllBytes("Images/" + path);   // You can use your own method over here.         
             return File(image, "image/png");
         }
+
+        [HttpGet("getTask3Diagram")]
+        public IActionResult GetTask3Diagram()
+        {
+            var path = "variant20_0.png";
+            var image = System.IO.File.ReadAllBytes("Images/" + path);   // You can use your own method over here.         
+            return File(image, "image/png");
+        }
+
+        [HttpGet("getTask3DiagramByOption")]
+        public IActionResult GetTask3DiagramByOption([FromQuery] int type)
+        {
+            var path = _bestOptionsCalculator.GetTask3SchemeByType(type);
+
+            if (path == null)
+            {
+                return NotFound();
+            }
+
+            var image = System.IO.File.ReadAllBytes("Images/" + path);   // You can use your own method over here.         
+            return File(image, "image/png");
+        }
+
+        [HttpGet("getTask3DiagramNames")]
+        public IActionResult GetTask3DiagramNames([FromQuery] List<ShipProperties> properties)
+        {
+            var cumulativeProperty = ShipProperties.None;
+
+            foreach (var property in properties)
+            {
+                if (!Enum.IsDefined(typeof(ShipProperties), property))
+                {
+                    return BadRequest($"Property {property} is not defined");
+                }
+
+                cumulativeProperty = cumulativeProperty | property;
+            }
+
+            return Json(_bestOptionsCalculator.GetTask3DiagramNames(cumulativeProperty));
+        }
+
+        [HttpGet("getTask3DiagramExactOption")]
+        public IActionResult GetTask3DiagramExactOption([FromQuery] int option)
+        {
+            var path = _bestOptionsCalculator.GetTask3SchemeByOption(option);
+
+            if (path == null)
+            {
+                return NotFound();
+            }
+
+            var image = System.IO.File.ReadAllBytes("Images/" + path);   // You can use your own method over here.         
+            return File(image, "image/png");
+        }
+
+        [HttpGet("getTask3DiagramLog")]
+        public IActionResult GetTask3DiagramLog([FromQuery] int option)
+        {
+            return Json(_bestOptionsCalculator.GetTask3LogByOption(option));
+        }
     }
 }
