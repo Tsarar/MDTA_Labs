@@ -194,6 +194,7 @@ namespace MDTA_Labs.Model.Variant_20
                     new FrameSlot()
                     {
                         SlotName = "Походження",
+                        SlotValue = "Україна",
                         OnDelete = (_) => "Судно передано на службу в іншу країну, доки судно не пройде розмитнення, країну не визначено",
                         OnEdit = (name) => "Судно розмитнено, країну змінено на " + name,
                     },
