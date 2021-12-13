@@ -1,4 +1,5 @@
-﻿using MDTA_Labs.Model.Variant_9;
+﻿using MDTA_Labs.Model;
+using MDTA_Labs.Model.Variant_9;
 using MDTA_Labs.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -130,7 +131,10 @@ namespace MDTA_Labs.Controllers
         [HttpGet("getTask3DiagramLog")]
         public IActionResult GetTask3DiagramLog([FromQuery] int option)
         {
-            return Json(_bestOptionsCalculator.GetTask3LogByOption(option));
+            return Json(new Log
+            {
+                LogOutput = _bestOptionsCalculator.GetTask3LogByOption(option)
+            });
         }
     }
 }
