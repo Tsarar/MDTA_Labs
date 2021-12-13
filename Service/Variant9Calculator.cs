@@ -190,14 +190,14 @@ namespace MDTA_Labs.Service
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Несправність системи живлення легкового авто",
                         Option = 1
                     }
                 );
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Несправність системи живлення вантажного авто",
                         Option = 2
                     }
                 );
@@ -213,14 +213,14 @@ namespace MDTA_Labs.Service
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Несправність поршневої групи легкового авто",
                         Option = 3
                     }
                 );
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Несправність поршневої групи вантажного авто",
                         Option = 4
                     }
                 );
@@ -236,14 +236,14 @@ namespace MDTA_Labs.Service
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Несправність подушки двигуна легкового авто",
                         Option = 5
                     }
                 );
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Несправність подушки двигуна вантажного авто",
                         Option = 6
                     }
                 );
@@ -259,14 +259,14 @@ namespace MDTA_Labs.Service
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Пошкодження корпусу двигуна легкового авто",
                         Option = 7
                     }
                 );
                 result.Add(
                     new DiagramType
                     {
-                        Name = "",
+                        Name = "Пошкодження корпусу двигуна вантажного авто",
                         Option = 8
                     }
                 );
@@ -306,30 +306,30 @@ namespace MDTA_Labs.Service
 
             switch (option)
             {
-                //case 1:
-                //    Variant9FrameBuilder.GetUnencryptedRadioFrame();
-                //    break;
-                //case 2:
-                //    Variant9FrameBuilder.GetUnencryptedRadioFrame2();
-                //    break;
-                //case 3:
-                //    Variant9FrameBuilder.GetEncryptedRadioFrame();
-                //    break;
-                //case 4:
-                //    Variant9FrameBuilder.GetEncryptedRadioFrame2();
-                //    break;
-                //case 5:
-                //    Variant9FrameBuilder.GetLandlineFrame();
-                //    break;
-                //case 6:
-                //    Variant9FrameBuilder.GetLandlineFrame2();
-                //    break;
-                //case 7:
-                //    Variant9FrameBuilder.GetCourierFrame();
-                //    break;
-                //case 8:
-                //    Variant9FrameBuilder.GetCourierFrame2();
-                //    break;
+                case 1:
+                    Variant9FrameBuilder.GetFail1();
+                    break;
+                case 2:
+                    Variant9FrameBuilder.GetFail2();
+                    break;
+                case 3:
+                    Variant9FrameBuilder.GetFail3();
+                    break;
+                case 4:
+                    Variant9FrameBuilder.GetFail4();
+                    break;
+                case 5:
+                    Variant9FrameBuilder.GetFail5();
+                    break;
+                case 6:
+                    Variant9FrameBuilder.GetFail6();
+                    break;
+                case 7:
+                    Variant9FrameBuilder.GetFail7();
+                    break;
+                case 8:
+                    Variant9FrameBuilder.GetFail8();
+                    break;
 
                 default:
                     break;

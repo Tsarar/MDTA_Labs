@@ -1,616 +1,584 @@
 ﻿using MDTA_Labs.Model.FrameModel;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MDTA_Labs.Model.Variant_9
 {
     public class Variant9FrameBuilder
     {
-        //private static Frame baseFrame;
+        private static Frame baseFrame;
 
-        //public static Frame GetBaseFrame()
-        //{
-        //    return new Frame()
-        //    {
-        //        FrameName = "Тип зв'язку",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //            },
-        //        }
-        //    };
-        //}
+        public static Frame GetBaseFrame()
+        {
+            return new Frame()
+            {
+                FrameName = "Несправність авто",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                    },
+                }
+            };
+        }
 
-        //public static Frame GetEncryptedRadioGenericFrame()
-        //{
-        //    if (baseFrame == null)
-        //    {
-        //        baseFrame = GetBaseFrame();
-        //    }
+        public static Frame GetGeneficFailType1()
+        {
+            if (baseFrame == null)
+            {
+                baseFrame = GetBaseFrame();
+            }
 
-        //    return new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Шифрований радіозв'язок",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Немає власника"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //                OnAdd = (_) => (new DateTime(DateTime.Now.Year + 1, DateTime.Now.Month, 1)).ToString()
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування",
-        //                SlotValue = "12345",
-        //                OnEdit = (newKey) => "Увага! Код шифрування був змінений на " + newKey
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
-        //}
+            return new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Несправність системи живлення",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                        SlotValue = "3 дні",
+                        OnDelete = (_) => "Тривалість ремонту видалено, мастер вкаже її після осмотру",
+                        OnEdit = (name) => "Осмотр скінчено, очікувана тривалість " + name,
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                        SlotValue = "Великі витрата пального, Втрата потужності, Невпевнений запуск"
+                    },
+                }
+            };
+        }
 
-        //public static Frame GetEncryptedRadioFrame()
-        //{
-        //    var baseFrame = GetEncryptedRadioGenericFrame();
+        public static Frame GetFail1()
+        {
+            var baseFrame = GetGeneficFailType1();
 
-        //    var frame = new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Радіо #341",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //                OnEdit = (name) => "Опис був змінений на " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Микита",
-        //                OnDelete = (_) => "Увага! У радіо більше немає власника",
-        //                OnEdit = (name) => "Увага! У радіо новий власник: " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //                SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
+            var frame = new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Несправність системи живлення легкового авто",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності",
+                        SlotValue = "Критичний"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту",
+                        OnEdit = (name) => "Вартість визначено: " + name + ", буде добре повідомити про це власнику",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                    },
+                }
+            };
 
-        //    var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Микита"));
+            var timeSlot = frame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            var oldtimeSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnDelete(oldtimeSlot.SlotValue));
+            timeSlot.SlotValue = oldtimeSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnEdit(oldtimeSlot.SlotValue));
 
-        //    var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-        //    nameSlot.SlotValue = "Опис радіо";
-        //    GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Опис радіо"));
+            var costSlot = frame.Slots.Where(x => x.SlotName == "Вартість ремонту").FirstOrDefault();
+            costSlot.SlotValue = "3100 грн.";
+            GlobalLog.ConsoleLog.AppendLine(costSlot.OnEdit("3100 грн."));
 
-        //    var encryptionSlot = frame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-        //    encryptionSlot.SlotValue = "54321";
-        //    var oldEncryptionSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(oldEncryptionSlot.OnEdit("54321"));
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо cкарги власників із базового фрейму");
 
-        //    return frame;
-        //}
+            return frame;
+        }
 
-        //public static Frame GetEncryptedRadioFrame2()
-        //{
-        //    var baseFrame = GetEncryptedRadioGenericFrame();
+        public static Frame GetFail2()
+        {
+            var baseFrame = GetGeneficFailType1();
 
-        //    var frame = new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Радіо #334",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //                OnEdit = (name) => "Опис був змінений на " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Сергій",
-        //                OnDelete = (_) => "Увага! У радіо більше немає власника",
-        //                OnEdit = (name) => "Увага! У радіо новий власник: " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //                SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
+            var frame = new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Несправність системи живлення вантажного авто",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності",
+                        SlotValue = "Високий"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту",
+                        OnEdit = (name) => "Вартість визначено: " + name + ", буде добре повідомити про це власнику",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                    },
+                }
+            };
 
-        //    var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Сергій"));
+            var timeSlot = frame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            var oldtimeSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnDelete(oldtimeSlot.SlotValue));
+            timeSlot.SlotValue = oldtimeSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnEdit(oldtimeSlot.SlotValue));
 
-        //    var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-        //    nameSlot.SlotValue = "Опис радіо";
-        //    GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Опис радіо"));
+            var costSlot = frame.Slots.Where(x => x.SlotName == "Вартість ремонту").FirstOrDefault();
+            costSlot.SlotValue = "3900 грн.";
+            GlobalLog.ConsoleLog.AppendLine(costSlot.OnEdit("3900 грн."));
 
-        //    var encryptionSlot = frame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-        //    encryptionSlot.SlotValue = "67890";
-        //    var oldEncryptionSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(oldEncryptionSlot.OnEdit("67890"));
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо cкарги власників із базового фрейму");
 
-        //    return frame;
-        //}
+            return frame;
+        }
 
-        //public static Frame GetUnencryptedRadioGenericFrame()
-        //{
-        //    if (baseFrame == null)
-        //    {
-        //        baseFrame = GetBaseFrame();
-        //    }
+        public static Frame GetGeneficFailType2()
+        {
+            if (baseFrame == null)
+            {
+                baseFrame = GetBaseFrame();
+            }
 
-        //    return new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Нешифроване радіо",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Немає власника"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //                OnAdd = (_) => (new DateTime(DateTime.Now.Year + 1, DateTime.Now.Month, 1)).ToString()
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування",
-        //                SlotValue = "12345",
-        //                OnEdit = (newKey) => "Увага! Код шифрування був змінений на " + newKey
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
-        //}
+            return new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Несправність поршневої групи",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                        OnDelete = (_) => "Тривалість ремонту видалено, мастер вкаже її після осмотру",
+                        OnEdit = (name) => "Осмотр скінчено, очікувана тривалість " + name,
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту",
+                        SlotValue = "3700 грн."
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                        SlotValue = "Великі витрата пального, Велика кількість диму, Невпевнений запуск, Детонації двигуна"
+                    },
+                }
+            };
+        }
 
-        //public static Frame GetUnencryptedRadioFrame()
-        //{
-        //    var baseFrame = GetUnencryptedRadioGenericFrame();
+        public static Frame GetFail3()
+        {
+            var baseFrame = GetGeneficFailType2();
 
-        //    var frame = new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Радіо #445",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //                OnEdit = (name) => "Опис був змінений на " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Микола",
-        //                OnDelete = (_) => "Увага! У радіо більше немає власника",
-        //                OnEdit = (name) => "Увага! У радіо новий власник: " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //                SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
+            var frame = new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Несправність поршневої групи легкового авто",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності",
+                        SlotValue = "Низький"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту",
+                        SlotValue = "3700 грн.",
+                        OnEdit = (name) => "Вартість визначено: " + name + ", буде добре повідомити про це власнику",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                        SlotValue = "Великі витрата пального, Велика кількість диму, Невпевнений запуск, Детонації двигуна"
+                    },
+                }
+            };
 
-        //    var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Микола"));
+            var timeSlot = frame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            var oldtimeSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnDelete("2 дні"));
+            timeSlot.SlotValue = "2 дні";
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnEdit("2 дні"));
 
-        //    var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-        //    nameSlot.SlotValue = "Опис нешифрованого радіо";
-        //    GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Опис нешифрованого радіо"));
+            var costSlot = frame.Slots.Where(x => x.SlotName == "Вартість ремонту").FirstOrDefault();
+            var oldSoctSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Вартість ремонту").FirstOrDefault();
+            costSlot.SlotValue = oldSoctSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine(costSlot.OnEdit(oldSoctSlot.SlotValue));
 
-        //    return frame;
-        //}
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо cкарги власників із базового фрейму");
 
-        //public static Frame GetUnencryptedRadioFrame2()
-        //{
-        //    var baseFrame = GetUnencryptedRadioGenericFrame();
+            return frame;
+        }
 
-        //    var frame = new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Радіо #446",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //                OnEdit = (name) => "Опис був змінений на " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Тарас",
-        //                OnDelete = (_) => "Увага! У радіо більше немає власника",
-        //                OnEdit = (name) => "Увага! У радіо новий власник: " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //                SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Не може бути приглушена технічними засобами супротивника, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
+        public static Frame GetFail4()
+        {
+            var baseFrame = GetGeneficFailType2();
 
-        //    var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Тарас"));
+            var frame = new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Несправність поршневої групи вантажного авто",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності",
+                        SlotValue = "Середній"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту",
+                        SlotValue = "3700 грн.",
+                        OnEdit = (name) => "Вартість визначено: " + name + ", буде добре повідомити про це власнику",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                        SlotValue = "Великі витрата пального, Велика кількість диму, Невпевнений запуск, Детонації двигуна"
+                    },
+                }
+            };
 
-        //    var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-        //    nameSlot.SlotValue = "Дуже гучне радіо";
-        //    GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Дуже гучне радіо"));
+            var timeSlot = frame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            var oldtimeSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnDelete("3 дні"));
+            timeSlot.SlotValue = "3 дні";
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnEdit("3 дні"));
 
-        //    return frame;
-        //}
+            var costSlot = frame.Slots.Where(x => x.SlotName == "Вартість ремонту").FirstOrDefault();
+            var oldSoctSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Вартість ремонту").FirstOrDefault();
+            costSlot.SlotValue = oldSoctSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine(costSlot.OnEdit(oldSoctSlot.SlotValue));
 
-        //public static Frame GetLandlineGenericFrame()
-        //{
-        //    if (baseFrame == null)
-        //    {
-        //        baseFrame = GetBaseFrame();
-        //    }
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо cкарги власників із базового фрейму");
 
-        //    return new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Провідне з'єднання",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Немає власника"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //                OnAdd = (_) => (new DateTime(DateTime.Now.Year + 1, DateTime.Now.Month, 1)).ToString()
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування",
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Не потребує попередньої підготовки оточення, яким фізично переміститься інформація, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
-        //}
+            return frame;
+        }
 
-        //public static Frame GetLandlineFrame()
-        //{
-        //    var baseFrame = GetLandlineGenericFrame();
+        public static Frame GetGeneficFailType3()
+        {
+            if (baseFrame == null)
+            {
+                baseFrame = GetBaseFrame();
+            }
 
-        //    var frame = new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Провідне з'єднання #3",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //                OnEdit = (name) => "Опис був змінений на " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Військова частина 21",
-        //                OnDelete = (_) => "Увага! У провідного з'єднання більше немає власника",
-        //                OnEdit = (name) => "Увага! У провідного з'єднання новий власник: " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //                SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Не потребує попередньої підготовки оточення, яким фізично переміститься інформація, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
+            return new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Несправність подушки двигуна",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                        SlotValue = "2 дні",
+                        OnDelete = (_) => "Тривалість ремонту видалено, мастер вкаже її після осмотру",
+                        OnEdit = (name) => "Осмотр скінчено, очікувана тривалість " + name,
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                        SlotValue = "Втрата потужності, Неприродні шуми, Невпевнений запуск, Детонації двигуна"
+                    },
+                }
+            };
+        }
 
-        //    var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Військова частина 21"));
+        public static Frame GetFail5()
+        {
+            var baseFrame = GetGeneficFailType3();
 
-        //    var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-        //    nameSlot.SlotValue = "Ця лінія довжиною 200 метрів";
-        //    GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Ця лінія довжиною 200 метрів"));
+            var frame = new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Несправність подушки двигуна легкового авто",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності",
+                        SlotValue = "Середній"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту",
+                        OnEdit = (name) => "Вартість визначено: " + name + ", буде добре повідомити про це власнику",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                    },
+                }
+            };
 
-        //    return frame;
-        //}
+            var timeSlot = frame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            var oldtimeSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnDelete(oldtimeSlot.SlotValue));
+            timeSlot.SlotValue = oldtimeSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnEdit(oldtimeSlot.SlotValue));
 
-        //public static Frame GetLandlineFrame2()
-        //{
-        //    var baseFrame = GetLandlineGenericFrame();
+            var costSlot = frame.Slots.Where(x => x.SlotName == "Вартість ремонту").FirstOrDefault();
+            costSlot.SlotValue = "2000 грн.";
+            GlobalLog.ConsoleLog.AppendLine(costSlot.OnEdit("2000    грн."));
 
-        //    var frame = new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Провідне з'єднання #4",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //                OnEdit = (name) => "Опис був змінений на " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Військова частина 21",
-        //                OnDelete = (_) => "Увага! У провідного з'єднання більше немає власника",
-        //                OnEdit = (name) => "Увага! У провідного з'єднання новий власник: " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //                SlotValue = baseFrame.Slots.Where(x => x.SlotName == "Дата наступного обслуговування").FirstOrDefault().OnAdd(null)
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Не потребує попередньої підготовки оточення, яким фізично переміститься інформація, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо cкарги власників із базового фрейму");
 
-        //    var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Військова частина 23"));
+            return frame;
+        }
 
-        //    var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-        //    nameSlot.SlotValue = "Ця лінія довжиною 250 метрів";
-        //    GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Ця лінія довжиною 250 метрів"));
+        public static Frame GetFail6()
+        {
+            var baseFrame = GetGeneficFailType3();
 
-        //    return frame;
-        //}
+            var frame = new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Несправність подушки двигуна вантажного авто",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності",
+                        SlotValue = "Критичний"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту",
+                        OnEdit = (name) => "Вартість визначено: " + name + ", буде добре повідомити про це власнику",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                    },
+                }
+            };
 
-        //public static Frame GetCourierGenericFrame()
-        //{
-        //    if (baseFrame == null)
-        //    {
-        //        baseFrame = GetBaseFrame();
-        //    }
+            var timeSlot = frame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            var oldtimeSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnDelete(oldtimeSlot.SlotValue));
+            timeSlot.SlotValue = oldtimeSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnEdit(oldtimeSlot.SlotValue));
 
-        //    return new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Гонець",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Немає війської частини"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування",
-        //                SlotValue = "Шифр цезаря",
-        //                OnEdit = (newKey) => "Увага! Ключ шифрування був змінений на " + newKey
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
-        //}
+            var costSlot = frame.Slots.Where(x => x.SlotName == "Вартість ремонту").FirstOrDefault();
+            costSlot.SlotValue = "5000 грн.";
+            GlobalLog.ConsoleLog.AppendLine(costSlot.OnEdit("5000 грн."));
 
-        //public static Frame GetCourierFrame()
-        //{
-        //    var baseFrame = GetCourierGenericFrame();
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо cкарги власників із базового фрейму");
 
-        //    var frame = new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Гонець Паша",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //                OnEdit = (name) => "Опис був змінений на " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Полк номер 5",
-        //                OnDelete = (_) => "Увага! Гонець більше не приписаний до війського формування",
-        //                OnEdit = (name) => "Увага! Гонець приписаний до нового війського формування: " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
+            return frame;
+        }
 
-        //    var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Полк номер 5"));
+        public static Frame GetGeneficFailType4()
+        {
+            if (baseFrame == null)
+            {
+                baseFrame = GetBaseFrame();
+            }
 
-        //    var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-        //    nameSlot.SlotValue = "Рядовий Петров";
-        //    GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Рядовий Петров"));
 
-        //    var encryptionSlot = frame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-        //    encryptionSlot.SlotValue = "Шифр цезаря зі зсувом 5";
-        //    var oldEncryptionSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(oldEncryptionSlot.OnEdit("Шифр цезаря зі зсувом 5"));
+            return new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Пошкоджений корпус двигуна",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                        OnDelete = (_) => "Тривалість ремонту видалено, мастер вкаже її після осмотру",
+                        OnEdit = (name) => "Осмотр скінчено, очікувана тривалість " + name,
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                        SlotValue = "Втрата потужності, Великі витрата пального, Детонації двигуна"
+                    },
+                }
+            };
+        }
 
-        //    return frame;
-        //}
+        public static Frame GetFail7()
+        {
+            var baseFrame = GetGeneficFailType4();
 
-        //public static Frame GetCourierFrame2()
-        //{
-        //    var baseFrame = GetCourierGenericFrame();
+            var frame = new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Несправність подушки двигуна вантажного авто",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності",
+                        SlotValue = "Високий"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту",
+                        OnEdit = (name) => "Вартість визначено: " + name + ", буде добре повідомити про це власнику",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                    },
+                }
+            };
 
-        //    var frame = new Frame()
-        //    {
-        //        BaseFrame = baseFrame,
-        //        FrameName = "Гонець Андрій",
-        //        Slots = new List<FrameSlot>
-        //        {
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Опис",
-        //                OnEdit = (name) => "Опис був змінений на " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Власник",
-        //                SlotValue = "Полк номер 12",
-        //                OnDelete = (_) => "Увага! Гонець більше не приписаний до війського формування",
-        //                OnEdit = (name) => "Увага! Гонець приписаний до нового війського формування: " + name
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Дата наступного обслуговування",
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Код шифрування"
-        //            },
-        //            new FrameSlot()
-        //            {
-        //                SlotName = "Властивості",
-        //                SlotValue = "Інформація не може бути прочитана за розумний час під час перехоплення противником, Інформація не може бути передана у голосовому форматі",
-        //            },
-        //        }
-        //    };
+            var timeSlot = frame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            var oldtimeSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnDelete("3 дні"));
+            timeSlot.SlotValue = "3 дні";
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnEdit("3 дні"));
 
-        //    var ВласникSlot = frame.Slots.Where(x => x.SlotName == "Власник").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(ВласникSlot.OnEdit("Полк номер 12"));
+            var costSlot = frame.Slots.Where(x => x.SlotName == "Вартість ремонту").FirstOrDefault();
+            costSlot.SlotValue = "3200 грн.";
+            GlobalLog.ConsoleLog.AppendLine(costSlot.OnEdit("3200 грн."));
 
-        //    var nameSlot = frame.Slots.Where(x => x.SlotName == "Опис").FirstOrDefault();
-        //    nameSlot.SlotValue = "Рядовий Іванов";
-        //    GlobalLog.ConsoleLog.AppendLine(nameSlot.OnEdit("Рядовий Іванов"));
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо cкарги власників із базового фрейму");
 
-        //    var encryptionSlot = frame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-        //    encryptionSlot.SlotValue = "Шифр цезаря зі зсувом 12";
-        //    var oldEncryptionSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Код шифрування").FirstOrDefault();
-        //    GlobalLog.ConsoleLog.AppendLine(oldEncryptionSlot.OnEdit("Шифр цезаря зі зсувом 12"));
+            return frame;
+        }
 
-        //    return frame;
-        //}
+        public static Frame GetFail8()
+        {
+            var baseFrame = GetGeneficFailType4();
+
+            var frame = new Frame()
+            {
+                BaseFrame = baseFrame,
+                FrameName = "Несправність подушки двигуна вантажного авто",
+                Slots = new List<FrameSlot>
+                {
+                    new FrameSlot()
+                    {
+                        SlotName = "Ступінь несправності",
+                        SlotValue = "Низький"
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Тривалість ремонту",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Вартість ремонту",
+                        OnEdit = (name) => "Вартість визначено: " + name + ", буде добре повідомити про це власнику",
+                    },
+                    new FrameSlot()
+                    {
+                        SlotName = "Скарги власників",
+                    },
+                }
+            };
+
+            var timeSlot = frame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            var oldtimeSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Тривалість ремонту").FirstOrDefault();
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnDelete("3 дні"));
+            timeSlot.SlotValue = "3 дні";
+            GlobalLog.ConsoleLog.AppendLine(oldtimeSlot.OnEdit("3 дні"));
+
+            var costSlot = frame.Slots.Where(x => x.SlotName == "Вартість ремонту").FirstOrDefault();
+            costSlot.SlotValue = "2900 грн.";
+            GlobalLog.ConsoleLog.AppendLine(costSlot.OnEdit("2900 грн."));
+
+            var oldCharSlot = frame.BaseFrame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            var charSlot = frame.Slots.Where(x => x.SlotName == "Скарги власників").FirstOrDefault();
+            charSlot.SlotValue = oldCharSlot.SlotValue;
+            GlobalLog.ConsoleLog.AppendLine("Беремо cкарги власників із базового фрейму");
+
+            return frame;
+        }
     }
 }
