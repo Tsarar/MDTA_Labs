@@ -235,6 +235,45 @@ namespace MDTA_Labs.Service
             return result;
         }
 
+        public int GetTask3TypeByProps(ShipProperties properties)
+        {
+            var result = new List<DiagramType>();
+
+            if (!properties.HasFlag(ShipProperties.option1) &&
+                !properties.HasFlag(ShipProperties.option2) &&
+                !properties.HasFlag(ShipProperties.option3) &&
+                properties.HasFlag(ShipProperties.option4))
+            {
+                return 1;
+            }
+
+            if (properties.HasFlag(ShipProperties.option1) &&
+                properties.HasFlag(ShipProperties.option2) &&
+                !properties.HasFlag(ShipProperties.option3) &&
+                !properties.HasFlag(ShipProperties.option4))
+            {
+                return 2;
+            }
+
+            if (properties.HasFlag(ShipProperties.option1) &&
+                properties.HasFlag(ShipProperties.option2) &&
+                !properties.HasFlag(ShipProperties.option3) &&
+                properties.HasFlag(ShipProperties.option4))
+            {
+                return 3;
+            }
+
+            if (properties.HasFlag(ShipProperties.option1) &&
+                !properties.HasFlag(ShipProperties.option2) &&
+                properties.HasFlag(ShipProperties.option3) &&
+                properties.HasFlag(ShipProperties.option4))
+            {
+                return 4;
+            }
+
+            return 0;
+        }
+
         public string GetTask3SchemeByOption(int option)
         {
             switch (option)

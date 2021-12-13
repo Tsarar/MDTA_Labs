@@ -275,6 +275,51 @@ namespace MDTA_Labs.Service
             return result;
         }
 
+        public int GetTask3TypeByProps(MechanicalIssue properties)
+        {
+            if (properties.HasFlag(MechanicalIssue.option1) &&
+                !properties.HasFlag(MechanicalIssue.option2) &&
+                properties.HasFlag(MechanicalIssue.option3) &&
+                properties.HasFlag(MechanicalIssue.option4) &&
+                !properties.HasFlag(MechanicalIssue.option5) &&
+                !properties.HasFlag(MechanicalIssue.option6))
+            {
+                return 1;
+            }
+
+            if (properties.HasFlag(MechanicalIssue.option1) &&
+                properties.HasFlag(MechanicalIssue.option2) &&
+                !properties.HasFlag(MechanicalIssue.option3) &&
+                properties.HasFlag(MechanicalIssue.option4) &&
+                !properties.HasFlag(MechanicalIssue.option5) &&
+                !properties.HasFlag(MechanicalIssue.option6))
+            {
+                return 2;
+            }
+
+            if (!properties.HasFlag(MechanicalIssue.option1) &&
+                !properties.HasFlag(MechanicalIssue.option2) &&
+                properties.HasFlag(MechanicalIssue.option3) &&
+                properties.HasFlag(MechanicalIssue.option4) &&
+                properties.HasFlag(MechanicalIssue.option5) &&
+                properties.HasFlag(MechanicalIssue.option6))
+            {
+                return 3;
+            }
+
+            if (properties.HasFlag(MechanicalIssue.option1) &&
+                !properties.HasFlag(MechanicalIssue.option2) &&
+                properties.HasFlag(MechanicalIssue.option3) &&
+                !properties.HasFlag(MechanicalIssue.option4) &&
+                !properties.HasFlag(MechanicalIssue.option5) &&
+                properties.HasFlag(MechanicalIssue.option6))
+            {
+                return 4;
+            }
+
+            return 0;
+        }
+
         public string GetTask3SchemeByOption(int option)
         {
             switch (option)

@@ -68,8 +68,22 @@ namespace MDTA_Labs.Controllers
         }
 
         [HttpGet("getTask3DiagramByOption")]
-        public IActionResult GetTask3DiagramByOption([FromQuery] int type)
+        public IActionResult GetTask3DiagramByOption([FromQuery] List<ShipProperties> properties)
         {
+            var cumulativeProperty = ShipProperties.None;
+
+            foreach (var property in properties)
+            {
+                if (!Enum.IsDefined(typeof(ShipProperties), property))
+                {
+                    return BadRequest($"Property {property} is not defined");
+                }
+
+                cumulativeProperty = cumulativeProperty | property;
+            }
+
+            var type = _bestOptionsCalculator.GetTask3TypeByProps(cumulativeProperty);
+
             var path = _bestOptionsCalculator.GetTask3SchemeByType(type);
 
             if (path == null)

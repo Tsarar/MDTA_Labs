@@ -249,6 +249,43 @@ namespace MDTA_Labs.Service
             return result;
         }
 
+        public int GetTask3TypeByProps(CommunicationProperties properties)
+        {
+            if (!properties.HasFlag(CommunicationProperties.CantBeSuppressed) &&
+                properties.HasFlag(CommunicationProperties.CanSendSound) &&
+                properties.HasFlag(CommunicationProperties.CantBeRead) &&
+                properties.HasFlag(CommunicationProperties.DoNotNeedSpecialPreparation))
+            {
+                return 1;
+            }
+
+            if (!properties.HasFlag(CommunicationProperties.CantBeSuppressed) &&
+                properties.HasFlag(CommunicationProperties.CanSendSound) &&
+                !properties.HasFlag(CommunicationProperties.CantBeRead) &&
+                properties.HasFlag(CommunicationProperties.DoNotNeedSpecialPreparation))
+            {
+                return 2;
+            }
+
+            if (properties.HasFlag(CommunicationProperties.CantBeSuppressed) &&
+                properties.HasFlag(CommunicationProperties.CanSendSound) &&
+                !properties.HasFlag(CommunicationProperties.CantBeRead) &&
+                properties.HasFlag(CommunicationProperties.DoNotNeedSpecialPreparation))
+            {
+                return 3;
+            }
+
+            if (properties.HasFlag(CommunicationProperties.CantBeSuppressed) &&
+                properties.HasFlag(CommunicationProperties.CanSendSound) &&
+                properties.HasFlag(CommunicationProperties.CantBeRead) &&
+                !properties.HasFlag(CommunicationProperties.DoNotNeedSpecialPreparation))
+            {
+                return 4;
+            }
+
+            return 0;
+        }
+
         public string GetTask3SchemeByOption(int option)
         {
             switch (option)
